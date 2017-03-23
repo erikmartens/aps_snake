@@ -3,7 +3,7 @@ angular.module('aps_snake', [])
 
   .controller('snakeController', function ($scope, $timeout, $window) {
     var BOARD_SIZE = 30;
-
+	console.log($window);
     var DIRECTIONS = {
       LEFT: 37,
       UP: 38,
@@ -14,9 +14,10 @@ angular.module('aps_snake', [])
     var COLORS = {
       GAME_OVER: '#820303',
       FRUIT: '#E80505',
-      SNAKE_HEAD: '#FFFFFF',
-      SNAKE_BODY: '#DADADA',
-      BOARD: '#000000'
+      SNAKE_HEAD: '#6F6F6F',
+      SNAKE_BODY: '#FFFFFF',
+      BOARD: '#000000',
+	  EGG: '#FFF5C3'
     };
 
     var snake = {
@@ -31,6 +32,11 @@ angular.module('aps_snake', [])
       x: -1,
       y: -1
     };
+	
+	var egg = {
+      x: -1,
+      y: -1
+    };
 
     var interval, tempDirection, isGameOver;
 
@@ -41,6 +47,8 @@ angular.module('aps_snake', [])
         return COLORS.GAME_OVER;
       } else if (fruit.x == row && fruit.y == col) {
         return COLORS.FRUIT;
+      } else if (egg.x == row && egg.y == col) {
+        return COLORS.EGG;
       } else if (snake.parts[0].x == row && snake.parts[0].y == col) {
         return COLORS.SNAKE_HEAD;
       } else if ($scope.board[col][row] === true) {
@@ -56,7 +64,9 @@ angular.module('aps_snake', [])
         return gameOver();
       } else if (fruitCollision(newHead)) {
         eatFruit();
-      }
+      } else if (eggCollision(newHead)) {
+		nextLevel();  
+	  }
 
       // Remove tail
       var oldTail = snake.parts.pop();
@@ -98,6 +108,10 @@ angular.module('aps_snake', [])
     function fruitCollision(part) {
       return part.x === fruit.x && part.y === fruit.y;
     }
+	
+	function eggCollision(part) {
+      return part.x === egg.x && part.y === egg.y;
+    }
 
     function resetFruit() {
       var x = Math.floor(Math.random() * BOARD_SIZE);
@@ -107,6 +121,16 @@ angular.module('aps_snake', [])
         return resetFruit();
       }
       fruit = { x: x, y: y };
+    }
+	
+	function resetEgg() {
+      var x = Math.floor(Math.random() * BOARD_SIZE);
+      var y = Math.floor(Math.random() * BOARD_SIZE);
+
+      if ($scope.board[y][x] === true) {
+        return resetEgg();
+      }
+      egg = { x: x, y: y };
     }
 
     function eatFruit() {
@@ -120,6 +144,10 @@ angular.module('aps_snake', [])
       if ($scope.score % 5 === 0) {
         interval -= 15;
       }
+	  
+	  if ($scope.score % 10 === 0) {
+        resetEgg();
+      }
     }
 
     function gameOver() {
@@ -131,6 +159,10 @@ angular.module('aps_snake', [])
 
       setupBoard();
     }
+	
+	function nextLevel() {
+		gameOver();
+	}
 
     function setupBoard() {
       $scope.board = [];
@@ -164,7 +196,7 @@ angular.module('aps_snake', [])
 
       // Set up initial snake
       for (var i = 0; i < 5; i++) {
-        snake.parts.push({ x: BOARD_SIZE / 2 + i, y: BOARD_SIZE / 2 });
+        snake.parts.push({ x: 10 + i, y: 10 });
       }
       resetFruit();
       update();
