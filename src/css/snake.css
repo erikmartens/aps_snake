@@ -1,9 +1,9 @@
 * {
-	font-family: "Lucida Grande";
+	font-family: "Arial";
 }
 
 #gameContainer, #pastScores {
-	width: 600px;
+	width: 900px;
 	float: left;
 }
 
@@ -12,7 +12,7 @@
 }
 
 .column {
-	border: 1px solid white;
+	border: 1px solid black;
 	width: 24px;
 	height: 24px;
 	display: inline-block;

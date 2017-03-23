@@ -2,7 +2,7 @@
 angular.module('aps_snake', [])
 
   .controller('snakeController', function ($scope, $timeout, $window) {
-    var BOARD_SIZE = 20;
+    var BOARD_SIZE = 30;
 
     var DIRECTIONS = {
       LEFT: 37,
@@ -14,8 +14,8 @@ angular.module('aps_snake', [])
     var COLORS = {
       GAME_OVER: '#820303',
       FRUIT: '#E80505',
-      SNAKE_HEAD: '#6F6F6F',
-      SNAKE_BODY: '#FFFFFF',
+      SNAKE_HEAD: '#FFFFFF',
+      SNAKE_BODY: '#DADADA',
       BOARD: '#000000'
     };
 
@@ -164,7 +164,7 @@ angular.module('aps_snake', [])
 
       // Set up initial snake
       for (var i = 0; i < 5; i++) {
-        snake.parts.push({ x: 10 + i, y: 10 });
+        snake.parts.push({ x: BOARD_SIZE / 2 + i, y: BOARD_SIZE / 2 });
       }
       resetFruit();
       update();
