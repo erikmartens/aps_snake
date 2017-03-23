@@ -35,3 +35,13 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# macOS File System
+
+.DS_Store
+
+# Dropbox
+
+.dropbox.cache
+.dropbox
+Icon?
