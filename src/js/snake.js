@@ -267,32 +267,38 @@ angular.module('aps_snake', [])
 	}
 	
     function eatFruit() {
-      $scope.score++;
-	  $scope.fruitCount++;
+		$scope.score++;
+		$scope.fruitCount++;
 
-      // Grow by 1
-      var tail = angular.copy(snake.parts[snake.parts.length - 1]);
-      snake.parts.push(tail);
-      resetFruit();
-
-      if ($scope.fruitCount % 5 === 0) {
-        interval -= 15;
-      }
-	  
+		// Grow by 1
+		var tail = angular.copy(snake.parts[snake.parts.length - 1]);
+		snake.parts.push(tail);
+		resetFruit();
 	 
-	  if ($scope.fruitCount === 3) {
-		setblueberry();
-	  } else if ($scope.fruitCount === 4) {
-		setBanana();
-	  } else if ($scope.fruitCount === 5) {
-        setGrapes();
-      } else if ($scope.fruitCount === 6) {
-        setExtraLife();
-	  } else if ($scope.fruitCount === 7) {
-        setRottenFruit();
-      }	else if ($scope.fruitCount === 8) {
-        setEgg();
-      }
+		if ($scope.fruitCount % 5 === 0) {
+			interval -= 15;
+			var x = Math.floor(Math.random() * 5)
+			switch (x) {
+				case 0:
+					setblueberry();
+					break;
+				case 1:
+					setBanana();
+					break;
+				case 2:
+					setGrapes();
+					break;
+				case 3:
+					setExtraLife();
+					break;
+				case 4:
+					setRottenFruit();
+					break;
+				}	
+			}
+		if ($scope.fruitCount === 30) {
+			setEgg();
+		}
     }
 	
 	function eatblueberry() {
