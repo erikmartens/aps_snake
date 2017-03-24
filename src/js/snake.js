@@ -13,11 +13,16 @@ angular.module('aps_snake', [])
 
     var COLORS = {
       GAME_OVER: '#820303',
-      FRUIT: '#E80505',
+      FRUIT: '#79D783',
       SNAKE_HEAD: '#6F6F6F',
       SNAKE_BODY: '#FFFFFF',
       BOARD: '#000000',
-	  EGG: '#FFF5C3'
+	  EGG: '#FFF5C3',
+	  BLUEBERRY: '#064FBA', 
+	  BANANA: '#FFE135',
+	  GRAPES: '#421C52',
+	  EXTRALIFE: '#E80505',
+	  ROTTENFRUIT: '#A0522D'
     };
 
     var snake = {
@@ -37,9 +42,36 @@ angular.module('aps_snake', [])
       x: -1,
       y: -1
     };
+	
+	var blueberry = {
+		x: -1,
+		y: -1
+	};
+	
+	var banana = {
+		x: -1,
+		y: -1
+	};
+	
+	var grapes = {
+		x: -1,
+		y: -1
+	};
+	
+	var extraLife = {
+		x: -1,
+		y: -1
+	};
+	
+	var rottenFruit = {
+		x: -1,
+		y: -1
+	};
 
     var interval, tempDirection, isGameOver;
-
+	
+	
+	$scope.fruitCount = 0;
     $scope.score = 0;
 
     $scope.setStyling = function (col, row) {
@@ -49,7 +81,17 @@ angular.module('aps_snake', [])
         return COLORS.FRUIT;
       } else if (egg.x == row && egg.y == col) {
         return COLORS.EGG;
-      } else if (snake.parts[0].x == row && snake.parts[0].y == col) {
+      } else if (blueberry.x == row && blueberry.y == col) {
+        return COLORS.BLUEBERRY;
+      } else if (banana.x == row && banana.y == col) {
+        return COLORS.BANANA;
+	  } else if (grapes.x == row && grapes.y == col) {
+        return COLORS.GRAPES;
+	  } else if (extraLife.x == row && extraLife.y == col) {
+        return COLORS.EXTRALIFE;
+	  } else if (rottenFruit.x == row && rottenFruit.y == col) {
+        return COLORS.ROTTENFRUIT;
+	  } else if (snake.parts[0].x == row && snake.parts[0].y == col) {
         return COLORS.SNAKE_HEAD;
       } else if ($scope.board[col][row] === true) {
         return COLORS.SNAKE_BODY;
@@ -66,6 +108,16 @@ angular.module('aps_snake', [])
         eatFruit();
       } else if (eggCollision(newHead)) {
 		nextLevel();  
+	  } else if (blueberryCollision(newHead)) {
+		eatblueberry();  
+	  } else if (bananaCollision(newHead)) {
+		eatBanana();
+	  } else if (grapesCollision(newHead)) {
+		eatGrapes();
+	  } else if (extraLifeCollision(newHead)) {
+		eatExtraLife();
+	  } else if (rottenFruitCollision(newHead)) {
+		eatRottenFruit();
 	  }
 
       // Remove tail
@@ -112,7 +164,27 @@ angular.module('aps_snake', [])
 	function eggCollision(part) {
       return part.x === egg.x && part.y === egg.y;
     }
-
+	
+	function blueberryCollision(part) {
+      return part.x === blueberry.x && part.y === blueberry.y;
+    }
+	
+	function bananaCollision(part) {
+	  return part.x === banana.x && part.y === banana.y;
+	}
+	
+	function grapesCollision(part) {
+	  return part.x === grapes.x && part.y === grapes.y;
+	}
+	
+	function extraLifeCollision(part) {
+	  return part.x === extraLife.x && part.y === extraLife.y;
+	}
+	
+	function rottenFruitCollision(part) {
+	  return part.x === rottenFruit.x && part.y === rottenFruit.y;
+	}
+	
     function resetFruit() {
       var x = Math.floor(Math.random() * BOARD_SIZE);
       var y = Math.floor(Math.random() * BOARD_SIZE);
@@ -123,32 +195,128 @@ angular.module('aps_snake', [])
       fruit = { x: x, y: y };
     }
 	
-	function resetEgg() {
-      var x = Math.floor(Math.random() * BOARD_SIZE);
+	function setEgg() {
+	  var oldTail = snake.parts.pop()
+      $scope.board[oldTail.y][oldTail.x] = false;
+	  egg = { x: oldTail.x, y: oldTail.y };
+    }
+
+	function setblueberry() {
+	  var x = Math.floor(Math.random() * BOARD_SIZE);
       var y = Math.floor(Math.random() * BOARD_SIZE);
 
       if ($scope.board[y][x] === true) {
-        return resetEgg();
+        return setblueberry();
       }
-      egg = { x: x, y: y };
-    }
+      blueberry = { x: x, y: y };
+	  $timeout(function () {
+		 blueberry = { x: -1, y: -1 }; 
+	  }, 10000);
+	}
+	
+	function setBanana() {
+	  var x = Math.floor(Math.random() * BOARD_SIZE);
+      var y = Math.floor(Math.random() * BOARD_SIZE);
 
+      if ($scope.board[y][x] === true) {
+        return setBanana();
+      }
+      banana = { x: x, y: y };
+	  $timeout(function () {
+		 banana = { x: -1, y: -1 }; 
+	  }, 9000);
+	}
+	
+	function setGrapes() {
+	  var x = Math.floor(Math.random() * BOARD_SIZE);
+      var y = Math.floor(Math.random() * BOARD_SIZE);
+
+      if ($scope.board[y][x] === true) {
+        return setGrapes();
+      }
+      grapes = { x: x, y: y };
+	  $timeout(function () {
+		 grapes = { x: -1, y: -1 }; 
+	  }, 8000);
+	}
+	
+	function setExtraLife() {
+	  var x = Math.floor(Math.random() * BOARD_SIZE);
+      var y = Math.floor(Math.random() * BOARD_SIZE);
+
+      if ($scope.board[y][x] === true) {
+        return setExtraLife();
+      }
+      extraLife = { x: x, y: y };
+	  $timeout(function () {
+		 extraLife = { x: -1, y: -1 }; 
+	  }, 7000);
+	}
+	
+	function setRottenFruit() {
+	  var x = Math.floor(Math.random() * BOARD_SIZE);
+      var y = Math.floor(Math.random() * BOARD_SIZE);
+
+      if ($scope.board[y][x] === true) {
+        return setRottenFruit();
+      }
+      rottenFruit = { x: x, y: y };
+	  $timeout(function () {
+		 rottenFruit = { x: -1, y: -1 }; 
+	  }, 10000);
+	}
+	
     function eatFruit() {
       $scope.score++;
+	  $scope.fruitCount++;
 
       // Grow by 1
       var tail = angular.copy(snake.parts[snake.parts.length - 1]);
       snake.parts.push(tail);
       resetFruit();
 
-      if ($scope.score % 5 === 0) {
+      if ($scope.fruitCount % 5 === 0) {
         interval -= 15;
       }
 	  
-	  if ($scope.score % 10 === 0) {
-        resetEgg();
+	 
+	  if ($scope.fruitCount === 3) {
+		setblueberry();
+	  } else if ($scope.fruitCount === 4) {
+		setBanana();
+	  } else if ($scope.fruitCount === 5) {
+        setGrapes();
+      } else if ($scope.fruitCount === 6) {
+        setExtraLife();
+	  } else if ($scope.fruitCount === 7) {
+        setRottenFruit();
+      }	else if ($scope.fruitCount === 8) {
+        setEgg();
       }
     }
+	
+	function eatblueberry() {
+		$scope.score+=3;
+		blueberry = { x: -1, y: -1 }; 
+    }
+	
+	function eatBanana() {
+		$scope.score+=5;
+		banana = {x: -1, y: -1 };
+	}
+	
+	function eatGrapes() {
+		$scope.score+=7;
+		grapes = {x: -1, y: -1 };
+	}
+	
+	function eatExtraLife() {
+		extraLife = {x: -1, y: -1 };
+	}
+	
+	function eatRottenFruit() {
+		rottenFruit = {x: -1, y: -1 };
+	}
 
     function gameOver() {
       isGameOver = true;
@@ -189,6 +357,7 @@ angular.module('aps_snake', [])
 
     $scope.startGame = function () {
       $scope.score = 0;
+	  $scope.fruitCount = 0;
       snake = { direction: DIRECTIONS.LEFT, parts: [] };
       tempDirection = DIRECTIONS.LEFT;
       isGameOver = false;
