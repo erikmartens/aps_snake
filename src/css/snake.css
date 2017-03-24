@@ -8,11 +8,10 @@
 }
 
 .row {
-	height: 26px;
+	height: 24px;
 }
 
 .column {
-	border: 1px solid black;
 	width: 24px;
 	height: 24px;
 	display: inline-block;
