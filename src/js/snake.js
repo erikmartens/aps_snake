@@ -35,6 +35,17 @@ angular.module('aps_snake', [])
     var interval, tempDirection, isGameOver;
 
     $scope.score = 0;
+	var highscore = readHighscore(document.cookie);
+	$scope.highscore = highscore;
+	
+	function readHighscore(fromCookie) {
+		const regex = new RegExp(/([a-zA-Z=]w*)/g)
+		const outputString = fromCookie.replace(regex, (match) => {
+			return ""
+		})
+		const outputInt = parseInt(outputString)
+		return outputInt
+	}
 
     $scope.setStyling = function (col, row) {
       if (isGameOver) {
@@ -124,6 +135,11 @@ angular.module('aps_snake', [])
 
     function gameOver() {
       isGameOver = true;
+	  let currentScore = $scope.score;
+	  if (currentScore > $scope.highscore) {
+		  $scope.highscore = currentScore;
+		  document.cookie = "highscore=" + currentScore;
+	  }
 
       $timeout(function () {
         isGameOver = false;
