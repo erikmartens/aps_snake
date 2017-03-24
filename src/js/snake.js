@@ -70,7 +70,7 @@ angular.module('aps_snake', [])
     var interval, tempDirection, isGameOver;
 	var  levelAims = [2,3,4,5,6];
 	var levelCountdown = [2,4,6,8,10];
-    if (document.cookie === undefined) document.cookie = "highscore=0"
+    if (document.cookie === "") document.cookie = "highscore=0"
     $scope.score = 0;
     $scope.highscore = readHighscore(document.cookie);
 	$scope.level =1;
