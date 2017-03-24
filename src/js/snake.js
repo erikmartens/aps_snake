@@ -70,7 +70,7 @@ angular.module('aps_snake', [])
 
     var interval, tempDirection, isGameOver;
   
-    if (document.cookie === "" ) document.cookie = "highscore=0"
+    if (document.cookie === "") document.cookie = "highscore=0"
     $scope.score = 0;
     $scope.highscore = readHighscore(document.cookie);
   
