@@ -68,15 +68,13 @@ angular.module('aps_snake', [])
 	};
 
     var interval, tempDirection, isGameOver;
-	var  levelAims = [2,3,4,5,6];
-	var levelCountdown = [2,4,6,8,10];
     if (document.cookie === "") document.cookie = "highscore=0"
     $scope.score = 0;
     $scope.highscore = readHighscore(document.cookie);
 	$scope.level =1;
     $scope.fruitCount = 0;
-	$scope.levelAim = levelAims[$scope.level - 1];
-	$scope.currentCountdown = levelCountdown[0];
+	$scope.levelAim = 3;
+	$scope.currentCountdown = 3;
 
     function readHighscore(fromCookie) {
       const regex = new RegExp(/([a-zA-Z=]w*)/g)
@@ -210,21 +208,22 @@ angular.module('aps_snake', [])
 	  var oldTail = snake.parts.pop()
       $scope.board[oldTail.y][oldTail.x] = false;
 	  egg = { x: oldTail.x, y: oldTail.y };
+	  var currentCountdownCache = $scope.currentCountdown;
+	  console.log(currentCountdownCache);
 	  var countdownTimer = setInterval(function() {
-		  $scope.currentCountdown--;
-		  console.log($scope.currentCountdown);
-		  if($scope.currentCountdown === 0) {
-			  clearInterval(countdownTimer);
+		  console.log(currentCountdownCache);
+		  currentCountdownCache--;
+		  if(currentCountdownCache === 0) {
+				clearInterval(countdownTimer);
 			  	$scope.level++;
 				$scope.fruitCount = 0;
-				$scope.levelAim = levelAims[$scope.level - 1];
-				$scope.currentCountdown = levelCountdown[$scope.level - 1];
+				$scope.levelAim+=2;
+				$scope.currentCountdown+=3;
 				setUpSnake();
 				egg = { x: -1, y: -1};
 
 		  }
 	  },1000);
-	  
     }
 
 	function setblueberry() {
@@ -293,21 +292,22 @@ angular.module('aps_snake', [])
 	}
 	
 	function setUpSnake() {
-	
-		// Set up initial snake
+		
+			// Set up initial snake
 			if (egg.x === -1)
 				for (var i = 0; i < 5; i++) snake.parts.push({ x: 10 + i, y: 10 });
 			else{
-				var child = {
-				direction: DIRECTIONS.LEFT,
-				parts: [{
-					x: -1,
-					y: -1
-				}]
-			};
-				
-				snake = child;
-				for (var i = 0; i < 5; i++) snake.parts.push({ x: 10 + i, y: 10 });
+				var oldLenght = snake.parts.length;
+				for (var i = oldLenght; i > 1; i--) {
+					var oldTail = snake.parts.pop();
+					console.log(typeof oldTail.y + "  " + oldTail.y);
+					$scope.board[oldTail.y][oldTail.x] = false;
+				}
+				var newHead = angular.copy(snake.parts[0]);
+				$scope.board[snake.parts[0].y][snake.parts[0].x] = false;
+				snake.parts[0] ={x: egg.x, y: egg.y};
+				$scope.board[snake.parts[0].y][snake.parts[0].x] = true;
+				for (var i = 0; i < 5; i++) snake.parts.push({ x: snake.parts[0].x + i, y: snake.parts[0].y });
 			}
       
 		
@@ -382,7 +382,16 @@ angular.module('aps_snake', [])
       $timeout(function () {
         isGameOver = false;
       }, 500);
-
+		egg = {x: -1, y: -1};
+		melon = {x: -1, y: -1};
+		grapes = {x: -1, y: -1};
+		blueberry = {x: -1, y: -1};
+		extraLife = {x: -1, y: -1};
+		rottenFruit = {x: -1, y: -1};
+		$scope.level=1;
+		$scope.levelAim= 2;
+		$scope.currentCountdown=3;
+			
       setupBoard();
     }
 	
@@ -419,6 +428,15 @@ angular.module('aps_snake', [])
 	  setUpSnake();
       resetFruit();
       update();
+	  egg = {x: -1, y: -1};
+			melon = {x: -1, y: -1};
+			grapes = {x: -1, y: -1};
+			blueberry = {x: -1, y: -1};
+			extraLife = {x: -1, y: -1};
+			rottenFruit = {x: -1, y: -1};
+			$scope.level=1;
+			$scope.levelAim = 2;
+			$scope.currentCountdown=3;
     };
 
   });

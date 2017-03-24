@@ -8,8 +8,8 @@
   <body ng-controller="snakeController">
 
     <div id="gameContainer">
-    <h3>Score: {{score}} &emsp;&emsp;&emsp;&emsp; Apples: {{fruitCount}} &emsp;&emsp;&emsp;&emsp; Aim: {{levelAim}} &emsp;&emsp;&emsp;&emsp; Level: {{level}} &emsp;&emsp;&emsp;&emsp; Highscore: {{highscore}}</h3>
-    
+    <h3 class="headline">Score: {{score}} &emsp;&emsp;&emsp;&emsp; Highscore: {{highscore}} &emsp;&emsp;&emsp;&emsp; Level: {{level}}</h3>
+    <h3 class="headline" id="timer">Apples: {{fruitCount}} &emsp;&emsp;&emsp;&emsp; Aim: {{levelAim}} &emsp;&emsp;&emsp;&emsp; </h3>
       <div>
           <div class="row" ng-repeat="column in board">
               <div class="column"
