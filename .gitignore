@@ -45,3 +45,11 @@ jspm_packages
 .dropbox.cache
 .dropbox
 Icon?
+
+# Node NPM
+
+node_modules
+
+# Other
+
+.project
