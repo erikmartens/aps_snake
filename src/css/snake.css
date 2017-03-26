@@ -2,9 +2,24 @@
 	font-family: "Arial";
 }
 
-#gameContainer, #pastScores {
-	width: 900px;
+#gameContainer {
+	width: 720px;
 	float: left;
+}
+
+#legend {
+	margin-top: 100px;
+	margin-left: 10px;
+	float: left;
+}
+
+#legend2 {
+	margin-top: 157px;
+	float: left;
+}
+
+#text {
+	margin-bottom: 33px;
 }
 
 .row {
@@ -18,6 +33,7 @@
 }
 
 #startGame {
+	float: left;
 	width: 120px;
 	padding: 10px;
 	margin-top: 5px;
@@ -29,4 +45,33 @@
 #startGame:hover {
 	color: red;
 	cursor: pointer;
+}
+
+#pauseGame {
+	float: left;
+	width: 120px;
+	padding: 10px;
+	margin-top: 5px;
+	margin-left: 10px;
+	text-align: center;
+	background-color: black;
+	color: white;
+}
+
+#pauseGame:hover {
+	color: red;
+	cursor: pointer;
+}
+
+#levelCountdown {
+	float: left;
+	width: 200px;
+	padding: 10px;
+	margin-top: 5px;
+	margin-left: 10px;
+	text-align: center;
+}
+
+b {
+	color: red
 }

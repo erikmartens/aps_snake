@@ -1,15 +1,16 @@
 <!DOCTYPE html>
+<meta charset="utf-8"/>
 <html ng-app='aps_snake'>
 
   <head>
     <link rel="stylesheet" type="text/css" href="./src/css/snake.css">
-  </head> 
+  </head>
 
   <body ng-controller="snakeController">
 
     <div id="gameContainer">
     <h3 class="headline">Score: {{score}} &emsp;&emsp;&emsp;&emsp; Highscore: {{highscore}} &emsp;&emsp;&emsp;&emsp; Level: {{level}}</h3>
-    <h3 class="headline" id="timer">Apples: {{fruitCount}} &emsp;&emsp;&emsp;&emsp; Aim: {{levelAim}} &emsp;&emsp;&emsp;&emsp; </h3>
+    <h3 class="headline">Apples: {{fruitCount}} &emsp;&emsp;&emsp;&nbsp;&nbsp; Aim: {{levelAim}} &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp; Lives: {{lives}}</h3>
       <div>
           <div class="row" ng-repeat="column in board">
               <div class="column"
@@ -19,10 +20,35 @@
           </div>
       </div>
       <div id="startGame" ng-click="startGame()">Start Game</div>
+      <div id="pauseGame" ng-click="pauseGame()">Pause</div>
+      <div id="levelCountdown"><h3 style="margin-top: 0px">Level-Countdown: <b> {{currentCountdown}}</b></h3></div>
     </div>
 
+    <div id="legend">
+      <h3><u>Legende:</u></h3>
+      <ul style="padding-left: 30px">
+        <li style="list-style-type:none"><img src="./src/img/Apple.png" alt="Apfel"></li>
+        <li style="list-style-type:none"><img src="./src/img/Banana.png" alt="Banane"></li>
+        <li style="list-style-type:none"><img src="./src/img/Blueberry.png" alt="Blaubeere"></li>
+        <li style="list-style-type:none"><img src="./src/img/Star.png" alt="Stern"></li>
+        <li style="list-style-type:none"><img src="./src/img/Heart.png" alt="Herz"></li>
+        <li style="list-style-type:none"><img src="./src/img/Rotten.png" alt="abgenagter Apfel"></li>
+        <listyle="list-style-type:none"><img src="./src/img/Egg.png" alt="Ei"></li>
+      </ul>
+    </div>
+    <div id="legend2">
+      <ul style="padding-left: 5px">
+        <h3><li id="text" style="list-style-type:none">: Standard Frucht</li></h3>
+        <h3><li id="text" style="list-style-type:none">: Halbiert Schlangenlaenge</li></h3>
+        <h3><li id="text" style="list-style-type:none">: Macht Schlange langsamer</li></h3>
+        <h3><li id="text" style="list-style-type:none">: Schlange kann nur durch Wand sterben <b>{{currentCountdownStar}}</b></li></h3>
+        <h3><li id="text" style="list-style-type:none">: Man bekommt ein zusaetzliches Leben</li></h3>
+        <h3><li id="text" style="list-style-type:none">: Die Steuerung wird gespiegelt <b>{{currentCountdownRotten}}</b></li></h3>
+        <h3><li id="text" style="list-style-type:none">: Fuehrt zum Levelaufstieg (NICHT ESSEN!) </li></h3>
+      </ul>
+    </div>
     <script src="./src/lib/angular.min.js"></script>
-    <script src="./src/js/snake.js"></script> 
+    <script src="./src/js/snake.js"></script>
   </body>
 
 </html>
