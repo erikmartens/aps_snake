@@ -2,9 +2,20 @@
 	font-family: "Arial";
 }
 
+#background {
+	z-index:0;
+	position: absolute;
+	top: 102px;
+	background-image: url(../../src/img/Rock.png);
+	background-size: 720px 720px;
+	width: 720px;
+	height: 720px;
+}
+
 #gameContainer {
 	width: 720px;
 	float: left;
+	position: relative;
 }
 
 #legend {
@@ -27,6 +38,9 @@
 }
 
 .column {
+	position: relative;
+	z-index: 2;
+	background-size: 24px 24px;
 	width: 24px;
 	height: 24px;
 	display: inline-block;
@@ -97,7 +111,7 @@
   position: absolute;
   left: 0px;
   top: 0px;
-  z-index: 1;
+  z-index: 3;
 }
 
 #levelCountdown {

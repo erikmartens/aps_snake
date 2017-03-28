@@ -12,19 +12,19 @@ angular.module('aps_snake', [])
     };
 
     var COLORS = {
-      GAME_OVER: '#820303',
-      FRUIT: '#79D783',
-      SNAKE_HEAD: '#6F6F6F',
-      SNAKE_BODY: '#FFFFFF',
-      SNAKE_HEAD_STAR: '#EDE100',
-      SNAKE_BODY_STAR: '#EBE464',
-      BOARD: '#000000',
-	  EGG: '#FFF5C3',
-	  BLUEBERRY: '#064FBA',
-	  BANANA: '#FFE135',
-	  STAR: '#421C52',
-	  EXTRALIFE: '#E80505',
-	  ROTTENFRUIT: '#A0522D'
+      GAME_OVER: 'url(./src/img/Apple.png)',
+      FRUIT: 'url(./src/img/Apple.png)',
+      SNAKE_HEAD: 'url(./src/img/Grass.png)',
+      SNAKE_BODY: 'url(./src/img/Grass.png)',
+      SNAKE_HEAD_STAR: 'url(./src/img/Grass.png)',
+      SNAKE_BODY_STAR: 'url(./src/img/Grass.png)',
+      BOARD: 'url(./src/img/Rock.png)',
+	  EGG: 'url(./src/img/Egg.png)',
+	  BLUEBERRY: 'url(./src/img/Blueberry.png)',
+	  BANANA: 'url(./src/img/Banana.png)',
+	  STAR: 'url(./src/img/Star.png)',
+	  EXTRALIFE: 'url(./src/img/Heart.png)',
+	  ROTTENFRUIT: 'url(./src/img/Rotten.png)'
     };
 
     var snake = {
@@ -114,15 +114,15 @@ angular.module('aps_snake', [])
       } else if (rottenFruit.x == row && rottenFruit.y == col) {
         return COLORS.ROTTENFRUIT;
       } else if (snake.parts[0].x == row && snake.parts[0].y == col && !hasStar) {
-        return COLORS.SNAKE_HEAD;
-      } else if ($scope.board[col][row] === true && !hasStar) {
-        return COLORS.SNAKE_BODY;
-      } else if (snake.parts[0].x == row && snake.parts[0].y == col && hasStar) {
-        return COLORS.SNAKE_HEAD_STAR;
-      } else if ($scope.board[col][row] === true && hasStar) {
-        return COLORS.SNAKE_BODY_STAR;
-      }
-      return COLORS.BOARD;
+          return COLORS.SNAKE_HEAD;
+        } else if ($scope.board[col][row] === true && !hasStar) {
+          return COLORS.SNAKE_BODY;
+        } else if (snake.parts[0].x == row && snake.parts[0].y == col && hasStar) {
+          return COLORS.SNAKE_HEAD_STAR;
+        } else if ($scope.board[col][row] === true && hasStar) {
+          return COLORS.SNAKE_BODY_STAR;
+        }
+      //return COLORS.BOARD;
     };
 
     function update() {
