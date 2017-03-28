@@ -72,6 +72,8 @@ angular.module('aps_snake', [])
 
   var isInverted = false;
   var hasStar = false;
+  var isPaused = false;
+  var isStarted = false;
   var currentCountdown = 3;
   var interval, tempDirection, isGameOver, countdownTimer, countdownTimerStar, countdownTimerRotten, TimerBlueberry, TimerBanana, TimerStar, TimerExtraLive, TimerRottenFruit;
 
@@ -105,25 +107,26 @@ angular.module('aps_snake', [])
         return COLORS.BLUEBERRY;
       } else if (banana.x == row && banana.y == col) {
         return COLORS.BANANA;
-	  } else if (star.x == row && star.y == col) {
+      } else if (star.x == row && star.y == col) {
         return COLORS.STAR;
-	  } else if (extraLife.x == row && extraLife.y == col) {
+      } else if (extraLife.x == row && extraLife.y == col) {
         return COLORS.EXTRALIFE;
-	  } else if (rottenFruit.x == row && rottenFruit.y == col) {
+      } else if (rottenFruit.x == row && rottenFruit.y == col) {
         return COLORS.ROTTENFRUIT;
       } else if (snake.parts[0].x == row && snake.parts[0].y == col && !hasStar) {
-          return COLORS.SNAKE_HEAD;
-        } else if ($scope.board[col][row] === true && !hasStar) {
-          return COLORS.SNAKE_BODY;
-        } else if (snake.parts[0].x == row && snake.parts[0].y == col && hasStar) {
-          return COLORS.SNAKE_HEAD_STAR;
-        } else if ($scope.board[col][row] === true && hasStar) {
-          return COLORS.SNAKE_BODY_STAR;
-        }
+        return COLORS.SNAKE_HEAD;
+      } else if ($scope.board[col][row] === true && !hasStar) {
+        return COLORS.SNAKE_BODY;
+      } else if (snake.parts[0].x == row && snake.parts[0].y == col && hasStar) {
+        return COLORS.SNAKE_HEAD_STAR;
+      } else if ($scope.board[col][row] === true && hasStar) {
+        return COLORS.SNAKE_BODY_STAR;
+      }
       return COLORS.BOARD;
     };
 
     function update() {
+      if (!isPaused) {
       var newHead = getNewHead();
 
       if ((boardCollision(newHead) || selfCollision(newHead) || eggCollision(newHead)) && $scope.lives === 0 && hasStar === false) {
@@ -142,7 +145,19 @@ angular.module('aps_snake', [])
 		eatRottenFruit();
 	  } else if ((boardCollision(newHead) || selfCollision(newHead) || eggCollision(newHead)) && $scope.lives > 0 && hasStar === false) {
 		$scope.lives--;
-    alert('Du hast noch ' + $scope.lives +' Leben!');
+    document.getElementById("lostLiveScreen").className = "pause";
+    isPaused = true;
+    var lostLiveCountdown = 3;
+    lostLiveTimer = $interval(function() {
+        lostLiveCountdown--;
+        $scope.lostLiveCountdown=lostLiveCountdown;
+		    if(lostLiveCountdown === 0) {
+          document.getElementById("lostLiveScreen").className = "run";
+          isPaused = false;
+          update();
+				  $interval.cancel(lostLiveTimer);
+		    }
+	  },1000);
     var oldLenght = snake.parts.length;
     for (var i = oldLenght; i > 1; i--) {
       var oldTail = snake.parts.pop();
@@ -169,6 +184,7 @@ angular.module('aps_snake', [])
       // Do it again
       snake.direction = tempDirection;
       $timeout(update, interval);
+    }
     }
 
     function getNewHead() {
@@ -244,20 +260,33 @@ angular.module('aps_snake', [])
 	  var currentCountdownCache = currentCountdown;
     $scope.currentCountdown=currentCountdownCache;
 	  countdownTimer = $interval(function() {
-      currentCountdownCache--;
-      $scope.currentCountdown=currentCountdownCache;
-		  if(currentCountdownCache === 0) {
-				$interval.cancel(countdownTimer);
-        alert('Level ' + $scope.level +' beendet!');
-			  $scope.level++;
-				$scope.fruitCount = 0;
-				$scope.levelAim+=2;
-        $scope.currentCountdown="";
-        currentCountdown+=3;
-				setUpSnake();
-				egg = { x: -1, y: -1};
-
-		  }
+      if (!isPaused) {
+        currentCountdownCache--;
+        $scope.currentCountdown=currentCountdownCache;
+		    if(currentCountdownCache === 0) {
+				  $interval.cancel(countdownTimer);
+          document.getElementById("levelEndScreen").className = "pause";
+          isPaused = true;
+          var levelEndCountdown = 3;
+          levelEndTimer = $interval(function() {
+              levelEndCountdown--;
+              $scope.levelEndCountdown=levelEndCountdown;
+              if(levelEndCountdown === 0) {
+                document.getElementById("levelEndScreen").className = "run";
+                isPaused = false;
+                update();
+                $interval.cancel(levelEndTimer);
+              }
+          },1000);
+			    $scope.level++;
+				  $scope.fruitCount = 0;
+				  $scope.levelAim+=2;
+          $scope.currentCountdown="";
+          currentCountdown+=3;
+				  setUpSnake();
+				  egg = { x: -1, y: -1};
+		    }
+      }
 	  },1000);
     }
 
@@ -271,11 +300,13 @@ angular.module('aps_snake', [])
       blueberry = { x: x, y: y };
       var CountdownBlueberry = 10;
   	  TimerBlueberry = $interval(function() {
-        CountdownBlueberry--;
-  		  if(CountdownBlueberry === 0) {
-  				$interval.cancel(TimerBlueberry);
-          blueberry = { x: -1, y: -1 };
-  		  }
+        if (!isPaused) {
+          CountdownBlueberry--;
+  		    if(CountdownBlueberry === 0) {
+  				  $interval.cancel(TimerBlueberry);
+            blueberry = { x: -1, y: -1 };
+  		    }
+        }
   	  },1000);
 	}
 
@@ -289,10 +320,12 @@ angular.module('aps_snake', [])
       banana = { x: x, y: y };
       var CountdownBanana = 9;
       TimerBanana = $interval(function() {
-        CountdownBanana--;
-        if(CountdownBanana === 0) {
-          $interval.cancel(TimerBanana);
-          banana = { x: -1, y: -1 };
+        if (!isPaused) {
+          CountdownBanana--;
+          if(CountdownBanana === 0) {
+            $interval.cancel(TimerBanana);
+            banana = { x: -1, y: -1 };
+          }
         }
       },1000);
 	}
@@ -307,10 +340,12 @@ angular.module('aps_snake', [])
       star = { x: x, y: y };
       var CountdownStar = 8;
       TimerStar = $interval(function() {
-        CountdownStar--;
-        if(CountdownStar === 0) {
-          $interval.cancel(TimerStar);
-          star = { x: -1, y: -1 };
+        if (!isPaused) {
+          CountdownStar--;
+          if(CountdownStar === 0) {
+            $interval.cancel(TimerStar);
+            star = { x: -1, y: -1 };
+          }
         }
       },1000);
 	}
@@ -325,10 +360,12 @@ angular.module('aps_snake', [])
       extraLife = { x: x, y: y };
       var CountdownExtraLive = 7;
       TimerExtraLive = $interval(function() {
-        CountdownExtraLive--;
-        if(CountdownExtraLive === 0) {
-          $interval.cancel(TimerExtraLive);
-          extraLive = { x: -1, y: -1 };
+        if (!isPaused) {
+          CountdownExtraLive--;
+          if(CountdownExtraLive === 0) {
+            $interval.cancel(TimerExtraLive);
+            extraLive = { x: -1, y: -1 };
+          }
         }
       },1000);
 	}
@@ -343,10 +380,12 @@ angular.module('aps_snake', [])
       rottenFruit = { x: x, y: y };
       var CountdownRottenFruit = 10;
       TimerRottenFruit = $interval(function() {
-        CountdownRottenFruit--;
-        if(CountdownRottenFruit === 0) {
-          $interval.cancel(TimerRottenFruit);
-          rottenFruit = { x: -1, y: -1 };
+        if (!isPaused) {
+          CountdownRottenFruit--;
+          if(CountdownRottenFruit === 0) {
+            $interval.cancel(TimerRottenFruit);
+            rottenFruit = { x: -1, y: -1 };
+          }
         }
       },1000);
 	}
@@ -385,7 +424,7 @@ angular.module('aps_snake', [])
       if (interval > 90) {
           interval -= 15;
       }
-			var x = Math.floor(Math.random() * 5)
+			var x = Math.floor(3/*Math.random() * 5*/)
 			switch (x) {
 				case 0:
 					setblueberry();
@@ -432,13 +471,15 @@ angular.module('aps_snake', [])
     var currentCountdownStar = 10;
     $scope.currentCountdownStar=currentCountdownStar;
 	  countdownTimerStar = $interval(function() {
-      currentCountdownStar--;
-      $scope.currentCountdownStar=currentCountdownStar;
-		  if(currentCountdownStar === 0) {
-				$interval.cancel(countdownTimerStar);
-        $scope.currentCountdownStar="";
-        hasStar = false;
-		  }
+      if (!isPaused) {
+        currentCountdownStar--;
+        $scope.currentCountdownStar=currentCountdownStar;
+		    if(currentCountdownStar === 0) {
+				  $interval.cancel(countdownTimerStar);
+          $scope.currentCountdownStar="";
+          hasStar = false;
+		    }
+      }
 	  },1000);
 	}
 
@@ -453,17 +494,20 @@ angular.module('aps_snake', [])
     var currentCountdownRotten = 10;
     $scope.currentCountdownRotten=currentCountdownRotten;
 	  countdownTimerRotten = $interval(function() {
-      currentCountdownRotten--;
-      $scope.currentCountdownRotten=currentCountdownRotten;
-		  if(currentCountdownRotten === 0) {
-				$interval.cancel(countdownTimerRotten);
-        $scope.currentCountdownRotten="";
-		    isInverted = false;
-		  }
+      if (!isPaused) {
+        currentCountdownRotten--;
+        $scope.currentCountdownRotten=currentCountdownRotten;
+		    if(currentCountdownRotten === 0) {
+				  $interval.cancel(countdownTimerRotten);
+          $scope.currentCountdownRotten="";
+		      isInverted = false;
+		    }
+      }
 	  },1000);
 	}
 
     function gameOver() {
+      isStarted = false;
       isGameOver = true;
       $interval.cancel(countdownTimerRotten);
       $interval.cancel(countdownTimerStar);
@@ -529,21 +573,31 @@ angular.module('aps_snake', [])
       } else if (e.keyCode == DIRECTIONS.DOWN && snake.direction !== DIRECTIONS.DOWN && isInverted) {
         tempDirection = DIRECTIONS.UP;
       } else if (e.keyCode == DIRECTIONS.P) {
-        alert('Pause! Weiter mit \"OK\".');
+        if (isStarted) {
+          if (document.getElementById("pauseScreen").className === "run") {
+            document.getElementById("pauseScreen").className = "pause";
+            isPaused = true;
+          } else {
+            document.getElementById("pauseScreen").className = "run";
+            isPaused = false
+            update();
+          }
+        }
       }
     });
 
     $scope.startGame = function () {
+      isStarted = true;
       $scope.score = 0;
-	  $scope.fruitCount = 0;
+	     $scope.fruitCount = 0;
       snake = { direction: DIRECTIONS.LEFT, parts: [] };
       tempDirection = DIRECTIONS.LEFT;
       isGameOver = false;
       interval = 150;
-	  setUpSnake();
+	    setUpSnake();
       resetFruit();
       update();
-	  egg = {x: -1, y: -1};
+	    egg = {x: -1, y: -1};
 			banana = {x: -1, y: -1};
 			star = {x: -1, y: -1};
 			blueberry = {x: -1, y: -1};
@@ -558,6 +612,15 @@ angular.module('aps_snake', [])
     };
 
     $scope.pauseGame = function () {
-      alert('Pause! Weiter mit \"OK\".');
+      if (isStarted) {
+        document.getElementById("pauseScreen").className = "pause";
+        isPaused = true;
+      }
+    };
+
+    $scope.resumeGame = function () {
+      document.getElementById("pauseScreen").className = "run";
+      isPaused = false;
+      update();
     };
   });
