@@ -11,7 +11,7 @@
     <div id="gameContainer">
     <h3 class="headline">Score: {{score}} &emsp;&emsp;&emsp;&emsp; Highscore: {{highscore}} &emsp;&emsp;&emsp;&emsp; Level: {{level}}</h3>
     <h3 class="headline">Apples: {{fruitCount}} &emsp;&emsp;&emsp;&nbsp;&nbsp; Aim: {{levelAim}} &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp; Lives: {{lives}}</h3>	
-	  <div id=background>
+	  <div id=background class="backgroundGrass">
 	  </div>
       <div id="grid">
           <div class="row" ng-repeat="column in board">
@@ -60,6 +60,9 @@
     <div id="levelEndScreen" class="run">
       <h3>Level {{level}}!</h3>
       <br><h3><b>{{levelEndCountdown}}</b></h3>
+    </div>
+	<div id="gameOverScreen" class="run">
+      <img src="./src/img/GameOverScreen.png" alt="Game Over">
     </div>
     <script src="./src/lib/angular.min.js"></script>
     <script src="./src/js/snake.js"></script>

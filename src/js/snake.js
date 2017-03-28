@@ -130,6 +130,7 @@ angular.module('aps_snake', [])
       var newHead = getNewHead();
 
       if ((boardCollision(newHead) || selfCollision(newHead) || eggCollision(newHead)) && $scope.lives === 0 && hasStar === false) {
+		document.getElementById("gameOverScreen").className = "gameOver";
         return gameOver();
       } else if (fruitCollision(newHead)) {
         eatFruit();
@@ -170,6 +171,7 @@ angular.module('aps_snake', [])
     $scope.board[snake.parts[0].y][snake.parts[0].x] = true;
     for (var i = 0; i < oldLenght; i++) snake.parts.push({ x: newHead.x + i, y: newHead.y });
 	  } else if (boardCollision(newHead)) {
+		  document.getElementById("gameOverScreen").className = "gameOver";
 		 return gameOver();
 	  }
 
@@ -273,6 +275,20 @@ angular.module('aps_snake', [])
               $scope.levelEndCountdown=levelEndCountdown;
               if(levelEndCountdown === 0) {
                 document.getElementById("levelEndScreen").className = "run";
+				var x = Math.floor(Math.random() * 3)
+				var back = "";
+			switch (x) {
+				case 0:
+					back = "backgroundGrass";
+					break;
+				case 1:
+					back = "backgroundRock";
+					break;
+				case 2:
+					back = "backgroundDesert";
+					break;
+				}
+				document.getElementById("background").className = back;
                 isPaused = false;
                 update();
                 $interval.cancel(levelEndTimer);
@@ -424,7 +440,7 @@ angular.module('aps_snake', [])
       if (interval > 90) {
           interval -= 15;
       }
-			var x = Math.floor(3/*Math.random() * 5*/)
+			var x = Math.floor(Math.random() * 5)
 			switch (x) {
 				case 0:
 					setblueberry();
@@ -540,7 +556,7 @@ angular.module('aps_snake', [])
     $scope.currentCountdownStar="";
     $scope.currentCountdownRotten="";
     currentCountdown = 3;
-
+    
       setupBoard();
     }
 
@@ -587,6 +603,7 @@ angular.module('aps_snake', [])
     });
 
     $scope.startGame = function () {
+	  document.getElementById("gameOverScreen").className = "run";
       isStarted = true;
       $scope.score = 0;
 	     $scope.fruitCount = 0;
