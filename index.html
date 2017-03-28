@@ -11,7 +11,7 @@
     <div id="gameContainer">
     <h3 class="headline">Score: {{score}} &emsp;&emsp;&emsp;&emsp; Highscore: {{highscore}} &emsp;&emsp;&emsp;&emsp; Level: {{level}}</h3>
     <h3 class="headline">Apples: {{fruitCount}} &emsp;&emsp;&emsp;&nbsp;&nbsp; Aim: {{levelAim}} &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp; Lives: {{lives}}</h3>	
-	  <div id=background>
+	  <div id=background class="backgroundGrass">
 	  </div>
       <div id="grid">
           <div class="row" ng-repeat="column in board">
@@ -44,22 +44,23 @@
         <h3><li id="text" style="list-style-type:none">: Halbiert Schlangenlaenge</li></h3>
         <h3><li id="text" style="list-style-type:none">: Macht Schlange langsamer</li></h3>
         <h3><li id="text" style="list-style-type:none">: Schlange kann nur durch Wand sterben <b>{{currentCountdownStar}}</b></li></h3>
-        <h3><li id="text" style="list-style-type:none">: Man bekommt ein zusaetzliches Leben</li></h3>
+        <h3><li id="text" style="list-style-type:none">: Zusatzleben</li></h3>
         <h3><li id="text" style="list-style-type:none">: Die Steuerung wird gespiegelt <b>{{currentCountdownRotten}}</b></li></h3>
         <h3><li id="text" style="list-style-type:none">: Fuehrt zum Levelaufstieg (NICHT ESSEN!)</li></h3>
       </ul>
     </div>
     <div id="pauseScreen" class="run">
-      <h3>Pause</h3>
-      <div id="resumeGame" ng-click="resumeGame()">Weiter spielen</div>
+      <img src="./src/img/PauseScreen.png" alt="Pause">
     </div>
     <div id="lostLiveScreen" class="run">
       <h3>Du hast noch {{lives}} Leben!</h3>
       <br><h3><b>{{lostLiveCountdown}}</b></h3>
     </div>
     <div id="levelEndScreen" class="run">
-      <h3>Level {{level}}!</h3>
-      <br><h3><b>{{levelEndCountdown}}</b></h3>
+      <img src="./src/img/LevelUpScreen.png" alt="Next Level">
+    </div>
+	<div id="gameOverScreen" class="run">
+      <img src="./src/img/GameOverScreen.png" alt="Game Over">
     </div>
     <script src="./src/lib/angular.min.js"></script>
     <script src="./src/js/snake.js"></script>

@@ -2,11 +2,31 @@
 	font-family: "Arial";
 }
 
-#background {
+.backgroundGrass {
 	z-index:0;
 	position: absolute;
 	top: 102px;
-	background-image: url(../../src/img/Rock.png);
+	background-image: url(../../src/img/GrassFull.png);
+	background-size: 720px 720px;
+	width: 720px;
+	height: 720px;
+}
+
+.backgroundRock {
+	z-index:0;
+	position: absolute;
+	top: 102px;
+	background-image: url(../../src/img/RockFull.png);
+	background-size: 720px 720px;
+	width: 720px;
+	height: 720px;
+}
+
+.backgroundDesert {
+	z-index:0;
+	position: absolute;
+	top: 102px;
+	background-image: url(../../src/img/DesertFull.png);
 	background-size: 720px 720px;
 	width: 720px;
 	height: 720px;
@@ -50,10 +70,10 @@
 	float: left;
 	width: 120px;
 	padding: 10px;
-	margin-top: 5px;
+	margin-top: 12px;
 	text-align: center;
-	background-color: black;
-	color: white;
+	background-color: white;
+	color: black;
 }
 
 #startGame:hover {
@@ -65,11 +85,11 @@
 	float: left;
 	width: 120px;
 	padding: 10px;
-	margin-top: 5px;
+	margin-top: 12px;
 	margin-left: 10px;
 	text-align: center;
-	background-color: black;
-	color: white;
+	background-color: white;
+	color: black;
 }
 
 #pauseGame:hover {
@@ -82,8 +102,8 @@
 	height: 240px;
 	background-color: grey;
   position: absolute;
-  left: 200px;
-  top: 200px;
+  left: 8px;
+  top: 110px;
   z-index: -1;
 }
 
@@ -104,13 +124,22 @@
 }
 
 .pause {
-	height: 475px;
-	width: 330px;
-	padding: 200px;
+	height: 720px;
+	width: 720px;
 	background-color: grey;
   position: absolute;
-  left: 0px;
-  top: 0px;
+  left: 8px;
+  top: 110px;
+  z-index: 3;;
+}
+
+.gameOver {
+	height: 720px;
+	width: 720px;
+	background-color: grey;
+  position: absolute;
+  left: 8px;
+  top: 110px;
   z-index: 3;
 }
 
@@ -118,11 +147,16 @@
 	float: left;
 	width: 200px;
 	padding: 10px;
-	margin-top: 5px;
+	margin-top: 12px;
 	margin-left: 10px;
 	text-align: center;
 }
 
 b {
 	color: red
+}
+
+body {
+	background-color: black;
+	color: white;	
 }
